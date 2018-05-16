@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DialogDemo.iml" filepath="$PROJECT_DIR$/DialogDemo.iml" />
-      <module fileurl="file://E:\github\demo\DialogDemo\DialogDemo.iml" filepath="E:\github\demo\DialogDemo\DialogDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\github\demo\DialogDemo\app\app.iml" filepath="E:\github\demo\DialogDemo\app\app.iml" />
     </modules>
   </component>
 </project>

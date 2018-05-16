@@ -94,6 +94,22 @@
                 android:layout_height="50dp"
                 android:layout_marginVertical="10dp"
                 android:text="Timepicker"/>
+            <Button
+                android:id="@+id/btn_customseekbar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:text="自定义seekbar"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent"/>
+            <Button
+                android:id="@+id/btn_sensor"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:text="Sensor"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

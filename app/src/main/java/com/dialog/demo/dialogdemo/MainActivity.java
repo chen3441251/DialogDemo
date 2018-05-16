@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
@@ -24,9 +25,10 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    int progress = 0;
     private boolean[] mBooleans;
-    private EditText mEt_name;
-    private EditText mEt_psd;
+    private EditText  mEt_name;
+    private EditText  mEt_psd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btn_progressdialog = (Button) findViewById(R.id.btn_progressdialog);
         Button btn_datePicker = (Button) findViewById(R.id.btn_datePickerDialog);
         Button btn_timePicker = (Button) findViewById(R.id.btn_timePickerDialog);
+        Button btn_customseekbar = (Button) findViewById(R.id.btn_customseekbar);
+        Button btn_sensor = (Button) findViewById(R.id.btn_sensor);
         btn_message.setOnClickListener(this);
         btn_items.setOnClickListener(this);
         btn_singleChoice.setOnClickListener(this);
@@ -57,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_progressdialog.setOnClickListener(this);
         btn_datePicker.setOnClickListener(this);
         btn_timePicker.setOnClickListener(this);
+        btn_customseekbar.setOnClickListener(this);
+        btn_sensor.setOnClickListener(this);
     }
 
     @Override
@@ -100,71 +106,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_timePickerDialog:
                 showTimePickerDialog();
                 break;
+            case R.id.btn_customseekbar:
+                showCustomSeekBar();
+                break;
+            case R.id.btn_sensor:
+                showSystemSensor();
+                break;
             default:
                 break;
         }
     }
 
-    private void showTimePickerDialog() {
-        Calendar calendar = Calendar.getInstance();
-        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Toast.makeText(getApplicationContext(),"选择了："+hourOfDay+"点"+minute+"分",Toast.LENGTH_LONG).show();
-            }
-        },calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),true).show();
+    private void showSystemSensor() {
+        startActivity(new Intent(this,SensorActivity.class));
     }
-
-    private void showDataPickerDialog() {
-        Calendar calendar = Calendar.getInstance();
-        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                Toast.makeText(getApplicationContext(),"用户选择了："+i +"年"+(i1+1)+"月"+i2+"日",Toast.LENGTH_LONG).show();
-            }
-        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
-    }
-
-    private void showStaticProgressDialog() {
-        ProgressDialog.show(this, "我是标题", "我是内容", false, true, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                Toast.makeText(getApplicationContext(), "ProgressDialog取消了", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    int progress = 0;
-
-    private void showProgressDialog() {
-        progress = 0;
-        //创建progressdialog对象
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("我是progress对象标题");
-        dialog.setIcon(getResources().getDrawable(R.mipmap.ic_launcher));
-        dialog.setMessage("我是progress对象的内容");
-        dialog.setMax(100);
-        dialog.setIndeterminate(false);//显示进度条进度
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        dialog.show();
-        //模拟进度数据
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (progress < 100) {
-                    progress += 5;
-                    SystemClock.sleep(500);
-                    dialog.setProgress(progress);
-                }
-                if (progress >= 100) {
-                    progress = 100;
-                    dialog.dismiss();
-                }
-            }
-        }).start();
-    }
-
 
     private void showDialogForMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -264,6 +219,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.create().show();
         mEt_name = view.findViewById(R.id.et_name);
         mEt_psd = view.findViewById(R.id.et_psd);
+    }
+
+    private void showStaticProgressDialog() {
+        ProgressDialog.show(this, "我是标题", "我是内容", false, true, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Toast.makeText(getApplicationContext(), "ProgressDialog取消了", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void showProgressDialog() {
+        progress = 0;
+        //创建progressdialog对象
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("我是progress对象标题");
+        dialog.setIcon(getResources().getDrawable(R.mipmap.ic_launcher));
+        dialog.setMessage("我是progress对象的内容");
+        dialog.setMax(100);
+        dialog.setIndeterminate(false);//显示进度条进度
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.show();
+        //模拟进度数据
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progress < 100) {
+                    progress += 5;
+                    SystemClock.sleep(500);
+                    dialog.setProgress(progress);
+                }
+                if (progress >= 100) {
+                    progress = 100;
+                    dialog.dismiss();
+                }
+            }
+        }).start();
+    }
+
+    private void showDataPickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                Toast.makeText(getApplicationContext(), "用户选择了：" + i + "年" + (i1 + 1) + "月" + i2 + "日", Toast.LENGTH_LONG).show();
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private void showTimePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                Toast.makeText(getApplicationContext(), "选择了：" + hourOfDay + "点" + minute + "分", Toast.LENGTH_LONG).show();
+            }
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
+    }
+
+    private void showCustomSeekBar() {
+       /* CustomDatePicker customDatePicker = new CustomDatePicker(this, R.style.AppTheme, new onDataSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+            }
+        }, 2018, 5, 16);*/
+        startActivity(new Intent(this, SecondActivity.class));
+
     }
 
     private AlertDialog.Builder setCustomPositiveButton(AlertDialog.Builder builder) {
